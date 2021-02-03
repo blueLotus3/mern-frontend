@@ -10,6 +10,14 @@ const Display = (props) => {
           <img src={glove.img} alt=''/>
           <h1>{glove.brand}</h1>
           <h3>{glove.size}</h3>
+          <button
+            onClick={() => {
+              props.selectGlove(glove);
+              props.history.push("/edit");
+            }}
+          >
+            Edit
+          </button>
         </article>
       ))}
     </div>
