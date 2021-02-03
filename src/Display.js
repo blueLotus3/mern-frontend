@@ -18,6 +18,14 @@ const Display = (props) => {
           >
             Edit
           </button>
+          <br />
+          <button
+            onClick={() => {
+              props.deleteGlove(glove);
+            }}
+          >
+            Delete
+          </button>
         </article>
       ))}
     </div>

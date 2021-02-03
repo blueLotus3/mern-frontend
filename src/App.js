@@ -23,7 +23,7 @@ function App() {
 	// 		});
   // };
   const getGloves = () => {
-    axios.get(url + "/gloves").then((response) => {
+    axios.get(url + "/gloves/").then((response) => {
       setGloves(response.data)
     })
   }
@@ -63,7 +63,14 @@ function App() {
   const selectGlove = (glove) => {
     setSelectedGlove(glove);
   };
-
+  const deleteGlove = (glove) => {
+    fetch(url + "/gloves/" + glove.brand, {
+      method: "delete",
+    }).then(() => {
+      
+      getGloves();
+    });
+  };
 
   
 
@@ -76,12 +83,12 @@ function App() {
       <hr />
 <Switch>
 <Route exact path="/" render={(rp) => <Display 
-          {...rp} gloves={gloves.data} selectGlove={selectGlove}  />} />
+          {...rp} gloves={gloves.data} selectGlove={selectGlove} deleteGlove={deleteGlove} />} />
 <Route
   exact
   path="/create"
   render={(rp) => (
-    <Form {...rp} label="create" glove={{emptyGlove}} handleSubmit={handleCreate} />
+    <Form {...rp} label="create" glove={emptyGlove} handleSubmit={handleCreate} />
   )}
 />
 <Route
