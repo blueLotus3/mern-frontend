@@ -3,11 +3,18 @@ import './App.css';
 import {Route, Link, Switch} from "react-router-dom"
 import Display from "./Display"
 // import axios from 'axios'
+import Form from "./Form"
 
 function App() {
   const url = "https://boxinggloves-mern.herokuapp.com"
   const [gloves, setGloves] = React.useState([])
- 	//function that does a fetch call to fetch items
+  const emptyGlove = {
+    brand: "",
+    size: 0,
+    img: "",
+  };
+
+  const [selectedGlove, setSelectedGlove] = React.useState(emptyGlove);
    const getGloves = () => {
 		fetch(url + '/gloves/')
 			.then((response) => response.json())
@@ -16,20 +23,45 @@ function App() {
 			});
 	};
 
-	//get items on page load
+
 	React.useEffect(() => {
 		getGloves();
-	}, []);
+  }, []);
+  
+  const handleCreate = (newGlove) => {
+    fetch(url + "/gloves/", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newGlove),
+    })
+    .then(() => {
+      
+      getGloves();
+    });
+  };
 
 
   
 
   return (
     <div className="App">
+      <h1>Boxing Merch</h1>
+      <Link to="/create">
+      <button>Craft Some Gloves</button>
+      </Link>
+      <hr />
 <Switch>
 <Route exact path="/" render={(rp) => <Display 
           {...rp} gloves={gloves.data}  />} />
-
+<Route
+  exact
+  path="/create"
+  render={(rp) => (
+    <Form {...rp} label="create" glove={{emptyGlove}} handleSubmit={handleCreate} />
+  )}
+/>
 
 </Switch>
     </div>
